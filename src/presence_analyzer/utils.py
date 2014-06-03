@@ -13,7 +13,7 @@ from flask import Response
 from presence_analyzer.main import app
 
 import logging
-log = logging.getLogger(__name__)  # pylint: disable=C0103
+LOG = logging.getLogger(__name__)  # pylint: disable=C0103
 
 
 def jsonify(function):
@@ -60,7 +60,7 @@ def get_data():
                 start = datetime.strptime(row[2], '%H:%M:%S').time()
                 end = datetime.strptime(row[3], '%H:%M:%S').time()
             except (ValueError, TypeError):
-                log.debug('Problem with line %d: ', i, exc_info=True)
+                LOG.debug('Problem with line %d: ', i, exc_info=True)
 
             data.setdefault(user_id, {})[date] = {
                 'start': start,
