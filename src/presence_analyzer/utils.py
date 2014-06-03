@@ -13,15 +13,16 @@ from flask import Response
 from presence_analyzer.main import app
 
 import logging
-log = logging.getLogger(__name__)  # pylint: disable-msg=C0103
+log = logging.getLogger(__name__)  # pylint: disable=C0103
 
 
 def jsonify(function):
     """
-    Creates a response with the JSON representation of wrapped function result.
+    Creates a response with the JSON representation of wrapped
+    function result.
     """
     @wraps(function)
-    def inner(*args, **kwargs):
+    def inner(*args, **kwargs):  # pylint: disable=C0111
         return Response(dumps(function(*args, **kwargs)),
                         mimetype='application/json')
     return inner
@@ -61,8 +62,10 @@ def get_data():
             except (ValueError, TypeError):
                 log.debug('Problem with line %d: ', i, exc_info=True)
 
-            data.setdefault(user_id, {})[date] = {'start': start, 'end': end}
-
+            data.setdefault(user_id, {})[date] = {
+                'start': start,
+                'end': end
+            }
     return data
 
 
