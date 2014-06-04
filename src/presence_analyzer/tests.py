@@ -222,6 +222,8 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         self.assertEqual(box, 20.12)
         box = utils.mean([10.1234567, 20.1234567, 30.1234567])
         self.assertEqual(box, 20.1234567)
+        box = utils.mean([])
+        self.assertEqual(box, 0)
 
 
 def suite():
