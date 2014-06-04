@@ -194,16 +194,22 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         """
         Test correct interval between two datetime.time objects.
         """
-        data = utils.interval(datetime.time(9, 39, 05),
-                              datetime.time(17, 59, 52))
+        data = utils.interval(
+            datetime.time(9, 39, 05),
+            datetime.time(17, 59, 52)
+        )
         self.assertEqual(data, 30047)
 
-        data = utils.interval(datetime.time(9, 19, 52),
-                              datetime.time(16, 07, 37))
+        data = utils.interval(
+            datetime.time(9, 19, 52),
+            datetime.time(16, 07, 37),
+        )
         self.assertEqual(data, 24465)
 
-        data = utils.interval(datetime.time(10, 48, 46),
-                              datetime.time(17, 23, 51))
+        data = utils.interval(
+            datetime.time(10, 48, 46),
+            datetime.time(17, 23, 51)
+        )
         self.assertEqual(data, 23705)
 
     def test_mean(self):
@@ -212,6 +218,10 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         """
         box = utils.mean([10, 20, 30])
         self.assertEqual(box, 20)
+        box = utils.mean([10.12, 20.12, 30.12])
+        self.assertEqual(box, 20.12)
+        box = utils.mean([10.1234567, 20.1234567, 30.1234567])
+        self.assertEqual(box, 20.1234567)
 
 
 def suite():
