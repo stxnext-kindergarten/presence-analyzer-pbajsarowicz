@@ -216,14 +216,13 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         """
         Test correct mean value.
         """
-        box = utils.mean([10, 20, 30])
-        self.assertEqual(box, 20)
-        box = utils.mean([10.12, 20.12, 30.12])
-        self.assertEqual(box, 20.12)
-        box = utils.mean([10.1234567, 20.1234567, 30.1234567])
-        self.assertEqual(box, 20.1234567)
-        box = utils.mean([])
-        self.assertEqual(box, 0)
+        self.assertEqual(utils.mean([10, 20, 30]), 20)
+        self.assertAlmostEqual(utils.mean([10.12, 20.12, 30.12]), 20.12)
+        self.assertAlmostEqual(
+            utils.mean([10.1234567, 20.1234567, 30.1234567]),
+            20.1234567
+        )
+        self.assertEqual(utils.mean([]), 0)
 
 
 def suite():
