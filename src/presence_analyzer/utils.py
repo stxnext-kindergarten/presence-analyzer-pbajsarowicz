@@ -91,7 +91,6 @@ def return_id_start_end(items):
         end = items[date]['end']
         result[date.weekday()]['start'].append(seconds_since_midnight(start))
         result[date.weekday()]['end'].append(seconds_since_midnight(end))
-    #import pdb; pdb.set_trace()
     return result
 
 

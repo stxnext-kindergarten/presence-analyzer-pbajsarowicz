@@ -84,8 +84,8 @@ def presence_start_end_view(user_id):
 
     weekdays = return_id_start_end(data[user_id])
     result = [(calendar.day_abbr[key],
-              mean(value['start']),
-              mean(value['end']))
+               mean(value['start']),
+               mean(value['end']))
               for key, value in weekdays.items()]
 
     return result
