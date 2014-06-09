@@ -1,5 +1,4 @@
-{% set pages = 
-    [
+{% set pages = [
         {
             'id_page': 1, 
             'href_page': url_for('page_to_render', page_name='presence_weekday'),
@@ -15,8 +14,7 @@
             'href_page': url_for('page_to_render', page_name='presence_start_end'),
             'name_page': 'Presence start-end'            
         }
-    ] 
-%}
+] %}
 
 <!doctype html>
 <html lang=en>
@@ -28,9 +26,9 @@
     <meta name="author" content="STX Next sp. z o.o."/>
     <meta name="viewport" content="width=device-width; initial-scale=1.0">
     
-    <link href="../static/css/normalize.css" media="all" rel="stylesheet" type="text/css" />
-    <link href="../static/css/style.css" media="all" rel="stylesheet" type="text/css" />
-
+    <link href="{{ url_for('static', filename='../static/css/normalize.css') }}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='../static/css/style.css') }}" media="all" rel="stylesheet" type="text/css" />
+    <script src="{{ url_for('static', filename='../static/js/jquery.min.js') }}"></script>
     {% block javascript %}{% endblock %}
 </head>
 
@@ -63,7 +61,7 @@
                 <div id="chart_div" style="display: none">
                 </div>
                 <div id="loading">
-                    <img src="/static/img/loading.gif" />
+                    <img src="{{ url_for('static', filename='../static/img/loading.gif') }}" />
                 </div>
             </p>
         </div>
