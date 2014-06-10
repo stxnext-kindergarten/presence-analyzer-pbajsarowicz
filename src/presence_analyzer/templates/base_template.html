@@ -26,9 +26,9 @@
     <meta name="author" content="STX Next sp. z o.o."/>
     <meta name="viewport" content="width=device-width; initial-scale=1.0">
     
-    <link href="{{ url_for('static', filename='../static/css/normalize.css') }}" media="all" rel="stylesheet" type="text/css" />
-    <link href="{{ url_for('static', filename='../static/css/style.css') }}" media="all" rel="stylesheet" type="text/css" />
-    <script src="{{ url_for('static', filename='../static/js/jquery.min.js') }}"></script>
+    <link href="{{ url_for('static', filename='/css/normalize.css') }}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='/css/style.css') }}" media="all" rel="stylesheet" type="text/css" />
+    <script src="{{ url_for('static', filename='/js/jquery.min.js') }}"></script>
     {% block javascript %}{% endblock %}
 </head>
 
@@ -61,7 +61,7 @@
                 <div id="chart_div" style="display: none">
                 </div>
                 <div id="loading">
-                    <img src="{{ url_for('static', filename='../static/img/loading.gif') }}" />
+                    <img src="{{ url_for('static', filename='/img/loading.gif') }}" />
                 </div>
             </p>
         </div>
