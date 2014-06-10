@@ -1,20 +1,18 @@
-{% set pages = [
-        {
-            'id_page': 1, 
-            'href_page': url_for('page_to_render', page_name='presence_weekday'),
-            'name_page': 'Presence by weekday'
-        },
-        {
-            'id_page': 2, 
-            'href_page': url_for('page_to_render', page_name='mean_time_weekday'),
-            'name_page': 'Presence mean time'
-        },
-        {
-            'id_page': 3, 
-            'href_page': url_for('page_to_render', page_name='presence_start_end'),
-            'name_page': 'Presence start-end'            
-        }
-] %}
+{% 
+set pages = [{
+    'id_page': 1,
+    'href_page': url_for('page_to_render', page_name='presence_weekday'),
+    'name_page': 'Presence by weekday'
+    }, {
+    'id_page': 2,
+    'href_page': url_for('page_to_render', page_name='mean_time_weekday'),
+    'name_page': 'Presence mean time'
+    }, {
+    'id_page': 3,
+    'href_page': url_for('page_to_render', page_name='presence_start_end'),
+    'name_page': 'Presence start-end'
+}]
+%}
 
 <!doctype html>
 <html lang=en>

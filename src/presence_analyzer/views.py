@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)  # pylint: disable-msg=C0103
 
 
 @app.route('/')
-def mainpage(name=None):
+def mainpage():
     """
     Redirects to front page.
     """
@@ -28,7 +28,7 @@ def page_to_render(page_name):
     """
     Returns name of page to render
     """
-    return render_template('%s.html' % page_name)
+    return render_template('{}.html'.format(page_name))
 
 
 @app.route('/api/v1/users', methods=['GET'])
