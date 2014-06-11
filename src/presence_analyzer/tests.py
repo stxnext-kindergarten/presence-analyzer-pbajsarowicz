@@ -49,6 +49,10 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         resp = self.client.get('/')
         self.assertEqual(resp.status_code, 302)
         assert resp.headers['Location'].endswith('/presence_weekday')
+        resp = self.client.get('/base_template')
+        resp1 = self.client.get('/page_not_found')
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.data, resp1.data)
 
     def test_api_users(self):
         """
