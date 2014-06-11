@@ -4,11 +4,11 @@ Defines views.
 """
 
 import calendar
-import datetime
-from flask import redirect, url_for, render_template
-from jinja2.loaders import TemplateNotFound
-import jinja2
-
+from flask import redirect, url_for
+from flask import Flask
+from flask.ext.mako import MakoTemplates, render_template, exceptions
+app = Flask(__name__)  # pylint: disable-msg=C0103
+mako = MakoTemplates(app)  # pylint: disable-msg=C0103
 from presence_analyzer.main import app
 from presence_analyzer.utils import jsonify, get_data, mean, group_by_weekday
 from presence_analyzer.utils import return_id_start_end
@@ -38,11 +38,12 @@ def page_to_render(page_name):
     """
     try:
         if page_name not in pages_list:
-            raise jinja2.exceptions.TemplateNotFound(page_name)
+            raise exceptions.TopLevelLookupException(page_name)
         else:
             return render_template('{}.html'.format(page_name))
-    except jinja2.exceptions.TemplateNotFound:
+    except exceptions.TopLevelLookupException:
         return render_template('{}.html'.format('page_not_found'))
+    return render_template('{}.html'.format(page_name))
 
 
 @app.route('/api/v1/users', methods=['GET'])

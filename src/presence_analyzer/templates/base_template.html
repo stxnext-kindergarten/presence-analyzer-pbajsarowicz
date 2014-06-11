@@ -1,5 +1,5 @@
-{% 
-set pages = [{
+<%
+    pages = [{
     'id_page': 1,
     'href_page': url_for('page_to_render', page_name='presence_weekday'),
     'name_page': 'Presence by weekday'
@@ -11,8 +11,8 @@ set pages = [{
     'id_page': 3,
     'href_page': url_for('page_to_render', page_name='presence_start_end'),
     'name_page': 'Presence start-end'
-}]
-%}
+    }]
+%>
 
 <!doctype html>
 <html lang=en>
@@ -24,10 +24,10 @@ set pages = [{
     <meta name="author" content="STX Next sp. z o.o."/>
     <meta name="viewport" content="width=device-width; initial-scale=1.0">
     
-    <link href="{{ url_for('static', filename='/css/normalize.css') }}" media="all" rel="stylesheet" type="text/css" />
-    <link href="{{ url_for('static', filename='/css/style.css') }}" media="all" rel="stylesheet" type="text/css" />
-    <script src="{{ url_for('static', filename='/js/jquery.min.js') }}"></script>
-    {% block javascript %}{% endblock %}
+    <link href="${ url_for('static', filename='/css/normalize.css') }" media="all" rel="stylesheet" type="text/css" />
+    <link href="${ url_for('static', filename='/css/style.css') }" media="all" rel="stylesheet" type="text/css" />
+    <script src="${ url_for('static', filename='/js/jquery.min.js') }"></script>
+    <%block name="javascript" />
 </head>
 
 <body>
@@ -35,23 +35,21 @@ set pages = [{
         <div id="header">
             <h1>Presence analyzer</h1>
             <ul>
-                {% for page in pages %}
-                    {% if page['id_page'] == active_page %}
+                % for page in pages :
+                    % if page['id_page'] == self.attr.active_page:
                         <li id="selected">
-                    {% else %}
+                    % else:
                         <li>
-                    {% endif %}
-                            <a href="{{ page['href_page'] }} "> 
-                                {{ page['name_page'] }}
+                    % endif
+                            <a href="${page['href_page']} "> 
+                                ${page['name_page']}
                             </a>
                         </li>
-                {% endfor %}
+                % endfor
             </ul>
-           
         </div>
-
         <div id="content">
-            <h2>{% block title %}{% endblock %}</h2>
+            <h2><%block name="title" /></h2>
             <p>
                 <select id="user_id" style="display: none">
                     <option value="">--</option>
@@ -59,10 +57,10 @@ set pages = [{
                 <div id="chart_div" style="display: none">
                 </div>
                 <div id="loading">
-                    <img src="{{ url_for('static', filename='/img/loading.gif') }}" />
+                    <img src="${ url_for('static', filename='/img/loading.gif') }" />
                 </div>
             </p>
         </div>
-
     </div>
+
 </body>
