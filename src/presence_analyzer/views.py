@@ -5,7 +5,9 @@ Defines views.
 
 import calendar
 import datetime
-from flask import redirect
+from flask import redirect, url_for, render_template
+from jinja2.loaders import TemplateNotFound
+import jinja2
 
 from presence_analyzer.main import app
 from presence_analyzer.utils import jsonify, get_data, mean, group_by_weekday
@@ -14,13 +16,33 @@ from presence_analyzer.utils import return_id_start_end
 import logging
 log = logging.getLogger(__name__)  # pylint: disable-msg=C0103
 
+pages_list = [
+    'presence_weekday',
+    'mean_time_weekday',
+    'presence_start_end'
+]
+
 
 @app.route('/')
 def mainpage():
     """
     Redirects to front page.
     """
-    return redirect('/static/presence_weekday.html')
+    return redirect(url_for('page_to_render', page_name='presence_weekday'))
+
+
+@app.route('/<string:page_name>', methods=['GET'])
+def page_to_render(page_name):
+    """
+    Returns name of page to render
+    """
+    try:
+        if page_name not in pages_list:
+            raise jinja2.exceptions.TemplateNotFound(page_name)
+        else:
+            return render_template('{}.html'.format(page_name))
+    except jinja2.exceptions.TemplateNotFound:
+        return render_template('{}.html'.format('page_not_found'))
 
 
 @app.route('/api/v1/users', methods=['GET'])
