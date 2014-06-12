@@ -1,17 +1,9 @@
 <%
-    pages = [{
-    'id_page': 1,
-    'href_page': url_for('page_to_render', page_name='presence_weekday'),
-    'name_page': 'Presence by weekday'
-    }, {
-    'id_page': 2,
-    'href_page': url_for('page_to_render', page_name='mean_time_weekday'),
-    'name_page': 'Presence mean time'
-    }, {
-    'id_page': 3,
-    'href_page': url_for('page_to_render', page_name='presence_start_end'),
-    'name_page': 'Presence start-end'
-    }]
+pages = [
+(1, url_for('page_to_render', page_name='presence_weekday'), 'Presence by weekday'),
+(2, url_for('page_to_render', page_name='mean_time_weekday'), 'Presence mean time'),
+(3, url_for('page_to_render', page_name='presence_start_end'), 'Presence start-end')
+]
 %>
 
 <!doctype html>
@@ -36,13 +28,13 @@
             <h1>Presence analyzer</h1>
             <ul>
                 % for page in pages :
-                    % if page['id_page'] == self.attr.active_page:
+                    % if page[0] == self.attr.active_page:
                         <li id="selected">
                     % else:
                         <li>
                     % endif
-                            <a href="${page['href_page']} "> 
-                                ${page['name_page']}
+                            <a href="${page[1]} "> 
+                                ${page[2]}
                             </a>
                         </li>
                 % endfor
