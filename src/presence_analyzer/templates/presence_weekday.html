@@ -1,8 +1,8 @@
-{% extends "base_template.html" %}
+<%! active_page = 1 %>
 
-{% set active_page = 1 %}
+<%inherit file="base_template.html" />
 
-{% block javascript %}
+<%block name="javascript">
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
         google.load("visualization", "1", {packages:["corechart"], 'language': 'en'});
@@ -10,7 +10,7 @@
         (function($) {
             $(document).ready(function(){
                 var loading = $('#loading');
-                $.getJSON("{{ url_for('users_view') }}", function(result) {
+                $.getJSON("${ url_for('users_view') }", function(result) {
                     var dropdown = $("#user_id");
                     $.each(result, function(item) {
                         dropdown.append($("<option />").val(this.user_id).text(this.name));
@@ -24,7 +24,7 @@
                     if(selected_user) {
                         loading.show();
                         chart_div.hide();
-                        $.getJSON("{{ url_for('presence_weekday_view', user_id=0) }}"+selected_user, function(result) {
+                        $.getJSON("${ url_for('presence_weekday_view', user_id=0) }"+selected_user, function(result) {
                             var data = google.visualization.arrayToDataTable(result);
                             var options = {};
                             chart_div.show();
@@ -37,8 +37,8 @@
             });
         })(jQuery);
     </script>
-{% endblock %}
+</%block>
 
-{% block title %}
+<%block name="title">
     Presence by weekday
-{% endblock %}
+</%block>
