@@ -27,14 +27,14 @@ pages = [
         <div id="header">
             <h1>Presence analyzer</h1>
             <ul>
-                % for page in pages :
-                    % if page[0] == self.attr.active_page:
+                % for id, url, name in pages :
+                    % if id == self.attr.active_page:
                         <li id="selected">
                     % else:
                         <li>
                     % endif
-                            <a href="${page[1]} "> 
-                                ${page[2]}
+                            <a href="${url} "> 
+                                ${name}
                             </a>
                         </li>
                 % endfor
