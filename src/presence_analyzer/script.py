@@ -111,3 +111,11 @@ def run():
         _serve('stop', dry_run=dry_run)
 
     werkzeug.script.run()
+
+
+def lets_update_xml():
+    """
+    Start function to update_xml
+    """
+    from utils import update_data_from_xml
+    update_data_from_xml()

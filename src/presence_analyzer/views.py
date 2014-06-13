@@ -11,7 +11,7 @@ app = Flask(__name__)  # pylint: disable-msg=C0103
 mako = MakoTemplates(app)  # pylint: disable-msg=C0103
 from presence_analyzer.main import app
 from presence_analyzer.utils import jsonify, get_data, mean, group_by_weekday
-from presence_analyzer.utils import return_id_start_end
+from presence_analyzer.utils import return_id_start_end, get_data_from_xml
 
 import logging
 log = logging.getLogger(__name__)  # pylint: disable-msg=C0103
@@ -52,9 +52,12 @@ def users_view():
     """
     Users listing for dropdown.
     """
-    data = get_data()
-    return [{'user_id': i, 'name': 'User {0}'.format(str(i))}
-            for i in data.keys()]
+    data_xml = get_data_from_xml()
+    return [{
+        'user_id': i,
+        'avatar': data_xml[i]['avatar'],
+        'name': data_xml[i]['name']
+    } for i in data_xml.keys()]
 
 
 @app.route('/api/v1/mean_time_weekday/<int:user_id>', methods=['GET'])

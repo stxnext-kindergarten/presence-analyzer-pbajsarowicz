@@ -10,10 +10,14 @@
         (function($) {
             $(document).ready(function(){
                 var loading = $('#loading');
+                var avatars = {};
+                var users = {};
                 $.getJSON("${ url_for('users_view') }", function(result) {
                     var dropdown = $("#user_id");
                     $.each(result, function(item) {
                         dropdown.append($("<option />").val(this.user_id).text(this.name));
+                        avatars[this.user_id]=this.avatar;
+                        users[this.user_id]=this.name;
                     });
                     dropdown.show();
                     loading.hide();
@@ -21,16 +25,26 @@
                 $('#user_id').change(function(){
                     var selected_user = $("#user_id").val();
                     var chart_div = $('#chart_div');
+                    var avatar_div = $('#avatar_div');
                     if(selected_user) {
                         loading.show();
                         chart_div.hide();
-                        $.getJSON("${ url_for('presence_weekday_view', user_id=0) }"+selected_user, function(result) {
-                            var data = google.visualization.arrayToDataTable(result);
-                            var options = {};
-                            chart_div.show();
+                        avatar_div.hide();
+                        $.getJSON("${ url_for('presence_weekday_view', user_id=0) }"+selected_user, function(result){
+                                chart_div.show();
+                                avatar_div.attr("style","display:block");
+                                avatar_div.find("img").attr("src",avatars[selected_user]);
+                                if (result == false) {
+                                    chart_div.html("No data for "+users[selected_user]);
+                                } else {
+                                    avatar_div.show();
+                                    var data = google.visualization.arrayToDataTable(result);
+                                    var options = {};
+                                    var chart = new google.visualization.PieChart(chart_div[0]);
+                                    
+                                    chart.draw(data, options);
+                                }
                             loading.hide();
-                            var chart = new google.visualization.PieChart(chart_div[0]);
-                            chart.draw(data, options);
                         });
                     }
                 });

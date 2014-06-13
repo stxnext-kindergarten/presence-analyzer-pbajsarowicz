@@ -17,10 +17,14 @@
         (function($) {
             $(document).ready(function(){
                 var loading = $('#loading');
+                var avatars = {};
+                var users = {};
                 $.getJSON("${ url_for('users_view') }", function(result) {
                     var dropdown = $("#user_id");
                     $.each(result, function(item) {
                         dropdown.append($("<option />").val(this.user_id).text(this.name));
+                        avatars[this.user_id]=this.avatar;
+                        users[this.user_id]=this.name;
                     });
                     dropdown.show();
                     loading.hide();
@@ -28,28 +32,38 @@
                 $('#user_id').change(function(){
                     var selected_user = $("#user_id").val();
                     var chart_div = $('#chart_div');
+                    var avatar_div = $('#avatar_div');
                     if(selected_user) {
                         loading.show();
                         chart_div.hide();
+                        avatar_div.hide();
                         $.getJSON("${ url_for('mean_time_weekday_view', user_id=0) }"+selected_user, function(result) {
-                            $.each(result, function(index, value) {
-                                value[1] = parseInterval(value[1]);
-                            });
-                            var data = new google.visualization.DataTable();
-                            data.addColumn('string', 'Weekday');
-                            data.addColumn('datetime', 'Mean time (h:m:s)');
-                            data.addRows(result);
-                            var options = {
-                                hAxis: {title: 'Weekday'}
-                            };
-                            var formatter = new google.visualization.DateFormat({pattern: 'HH:mm:ss'});
-                            formatter.format(data, 1);
-
-                            
                             chart_div.show();
+                            avatar_div.attr("style","display:block");
+                            avatar_div.find("img").attr("src",avatars[selected_user]);
+                            if (result == false) {
+                                chart_div.html("No data for "+users[selected_user]);
+                            } else {
+                                $.each(result, function(index, value) {
+                                    value[1] = parseInterval(value[1]);
+                                });
+                                var data = new google.visualization.DataTable();
+                                data.addColumn('string', 'Weekday');
+                                data.addColumn('datetime', 'Mean time (h:m:s)');
+                                data.addRows(result);
+                                var options = {
+                                    hAxis: {title: 'Weekday'}
+                                }
+                                var formatter = new google.visualization.DateFormat({pattern: 'HH:mm:ss'});
+                                formatter.format(data, 1);
+
+                                avatar_div.attr("style","display:block");
+                                avatar_div.find("img").attr("src",avatars[selected_user]);
+                                
+                                var chart = new google.visualization.ColumnChart(chart_div[0]);
+                                chart.draw(data, options);
+                            }
                             loading.hide();
-                            var chart = new google.visualization.ColumnChart(chart_div[0]);
-                            chart.draw(data, options);
                         });
                     }
                 });

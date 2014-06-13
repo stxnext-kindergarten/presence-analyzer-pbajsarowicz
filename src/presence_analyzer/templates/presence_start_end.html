@@ -16,10 +16,14 @@
         (function($) {
             $(document).ready(function(){
                 var loading = $('#loading');
+                var avatars = {};
+                var users = {};
                 $.getJSON("${ url_for('users_view') }", function(result) {
                     var dropdown = $("#user_id");
                     $.each(result, function(item) {
                         dropdown.append($("<option />").val(this.user_id).text(this.name));
+                        avatars[this.user_id]=this.avatar;
+                        users[this.user_id]=this.name;
                     });
                     dropdown.show();
                     loading.hide();
@@ -27,10 +31,18 @@
                 $('#user_id').change(function(){
                     var selected_user = $("#user_id").val();
                     var chart_div = $('#chart_div');
+                    var avatar_div = $('#avatar_div');
                     if(selected_user) {
                         loading.show();
                         chart_div.hide();
+                        avatar_div.hide();
                         $.getJSON("${ url_for('presence_start_end_view', user_id=0) }"+selected_user, function(result) {
+                            chart_div.show();
+                            avatar_div.attr("style","display:block");
+                            avatar_div.find("img").attr("src",avatars[selected_user]);
+                            if (result == false) {
+                                chart_div.html("No data for "+users[selected_user]);
+                            } else {
                             $.each(result, function(index, value) {
                                 index[1] = parseInterval(index[1]);
                                 value[1] = parseInterval(value[1]);
@@ -48,11 +60,14 @@
                             formatter.format(data, 1);
                             formatter.format(data, 2);
                             chart_div.show();
+                            avatar_div.attr("style","display:block");
+                            avatar_div.find("img").attr("src",avatars[selected_user]);
                             loading.hide();
                             var chart = new google.visualization.Timeline(chart_div[0]);
                             chart.draw(data, options);
+                            }
+                            loading.hide();
                         });
-
                     }
                 });
             });
