@@ -11,6 +11,8 @@ from flask import Response
 from presence_analyzer.main import app
 import logging
 log = logging.getLogger(__name__)  # pylint: disable=C0103
+from lxml import etree
+import urllib2
 
 
 def jsonify(function):
@@ -23,6 +25,52 @@ def jsonify(function):
         return Response(dumps(function(*args, **kwargs)),
                         mimetype='application/json')
     return inner
+
+
+def get_data_from_xml():
+    """
+    Extracts data from XML file and groups it by user_id.
+
+    It creates structure like this:
+    data = {
+        141: {
+            'avatar': '/api/images/users/141',
+            'name': 'Adam P.'
+        },
+        176: {
+            'avatar': '/api/images/users/176',
+            'name': 'Adrian K.'
+        },
+    }
+    """
+    data = {}
+    with open(app.config['DATA_XML'], 'r') as xmlfile:
+        tree = etree.parse(xmlfile)
+        server = tree.find("server")
+        host = server.find("host").text
+        port = server.find("port").text
+        protocol = server.find("protocol").text
+        users_node = tree.find("users")
+        users = users_node.findall("user")
+        for user in users:
+            avatar = user.find("avatar").text
+            name = user.find("name").text
+            user_id = user.get("id")
+            data.setdefault(int(user_id), {
+                'avatar': '{}://{}:{}{}'.format(protocol, host, port, avatar),
+                'name': name
+            })
+    return data
+
+
+def update_data_from_xml():
+    """
+    Update xml file
+    """
+    with open(app.config['DATA_XML'], 'w') as xmlfile:
+        data = urllib2.urlopen(app.config['DATA_XML_URL'])
+        temp = data.read()
+        xmlfile.write(temp)
 
 
 def get_data():
@@ -50,7 +98,6 @@ def get_data():
             if len(row) != 4:
                 # ignore header and footer lines
                 continue
-
             try:
                 user_id = int(row[0])
                 date = datetime.strptime(row[1], '%Y-%m-%d').date()

@@ -28,14 +28,17 @@ setup(
         'setuptools',
         'Flask',
         'Flask-Mako',
-        'Mako'
+        'Mako',
+        'lxml'
     ],
-    entry_points="""
-    [console_scripts]
-    flask-ctl = presence_analyzer.script:run
-
-    [paste.app_factory]
-    main = presence_analyzer.script:make_app
-    debug = presence_analyzer.script:make_debug
-    """,
+    entry_points={
+        'console_scripts': [
+            'flask-ctl=presence_analyzer.script:run',
+            'update_xml=presence_analyzer.script:lets_update_xml',
+        ],
+        'paste.app_factory': [
+            'main=presence_analyzer.script:make_app',
+            'debug=presence_analyzer.script:make_debug',
+        ]
+    }
 )

@@ -13,6 +13,11 @@ TEST_DATA_CSV = os.path.join(
     os.path.dirname(__file__), '..', '..', 'runtime', 'data', 'test_data.csv'
 )
 
+TEST_DATA_XML = os.path.join(
+    os.path.dirname(__file__), '..', '..', 'src',
+    'presence_analyzer', 'users.xml'
+)
+
 
 # pylint: disable=E1103
 class PresenceAnalyzerViewsTestCase(unittest.TestCase):
@@ -25,6 +30,7 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         Before each test, set up a environment.
         """
         main.app.config.update({'DATA_CSV': TEST_DATA_CSV})
+        main.app.config.update({'DATA_XML': TEST_DATA_XML})
         self.client = main.app.test_client()
 
     def tearDown(self):
@@ -61,8 +67,11 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.content_type, 'application/json')
         data = json.loads(resp.data)
-        self.assertEqual(len(data), 2)
-        self.assertDictEqual(data[0], {u'user_id': 10, u'name': u'User 10'})
+        self.assertDictEqual(data[0], {
+            u'avatar': u'https://intranet.stxnext.pl:443/api/images/users/130',
+            u'name': u'Kajetan O.',
+            u'user_id': 130
+        })
 
     def test_api_mean_time_weekday(self):
         """
@@ -166,6 +175,7 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         Before each test, set up a environment.
         """
         main.app.config.update({'DATA_CSV': TEST_DATA_CSV})
+        main.app.config.update({'DATA_XML': TEST_DATA_XML})
 
     def tearDown(self):
         """
@@ -185,6 +195,17 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         self.assertItemsEqual(data[10][sample_data].keys(), ['start', 'end'])
         self.assertEqual(data[10][sample_data]['start'],
                          datetime.time(9, 39, 5))
+
+    def test_get_data_from_xml(self):
+        """
+        Test parsing of XML file
+        """
+        data = utils.get_data_from_xml()
+        self.assertIsInstance(data, dict)
+        self.assertEqual(
+            data[141]['avatar'],
+            'https://intranet.stxnext.pl:443/api/images/users/141'
+        )
 
     def test_group_by_weekday(self):
         """
