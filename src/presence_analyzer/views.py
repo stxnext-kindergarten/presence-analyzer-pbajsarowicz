@@ -54,10 +54,10 @@ def users_view():
     """
     data_xml = get_data_from_xml()
     return [{
-        'user_id': i,
-        'avatar': data_xml[i]['avatar'],
-        'name': data_xml[i]['name']
-    } for i in data_xml.keys()]
+        'user_id': user_id,
+        'avatar': details['avatar'],
+        'name': details['name']
+    } for user_id, details in data_xml.iteritems()]
 
 
 @app.route('/api/v1/mean_time_weekday/<int:user_id>', methods=['GET'])
