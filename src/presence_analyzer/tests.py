@@ -13,6 +13,10 @@ TEST_DATA_CSV = os.path.join(
     os.path.dirname(__file__), '..', '..', 'runtime', 'data', 'test_data.csv'
 )
 
+TEST_CACHE_CSV = os.path.join(
+    os.path.dirname(__file__), '..', '..', 'runtime', 'data', 'test_cache.csv'
+)
+
 TEST_DATA_XML = os.path.join(
     os.path.dirname(__file__), '..', '..', 'src',
     'presence_analyzer', 'users.xml'
@@ -106,6 +110,9 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         ])
 
     def test_presence_weekday_view(self):
+        """
+        Test presence weekday
+        """
         resp = self.client.get('/api/v1/presence_weekday/10')
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.content_type, 'application/json')
@@ -137,6 +144,9 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         ])
 
     def test_presence_start_end_view(self):
+        """
+        Test interval presence time
+        """
         resp = self.client.get('/api/v1/presence_start_end/10')
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.content_type, 'application/json')
@@ -182,6 +192,22 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         Get rid of unused objects after each test.
         """
         pass
+
+    def test_cache(self):
+        """
+        Test cache function
+        """
+        data1 = utils.get_data()
+        cache1 = utils.CACHE
+        main.app.config.update({'DATA_CSV': TEST_CACHE_CSV})
+        utils.CACHE = {}
+        data2 = utils.get_data()
+        cache2 = utils.CACHE
+        self.assertNotEqual(data1, data2)
+        self.assertNotEqual(cache1, cache2)
+        self.assertIsInstance(cache1, dict)
+        self.assertIsInstance(cache2, dict)
+        utils.CACHE = {}
 
     def test_get_data(self):
         """

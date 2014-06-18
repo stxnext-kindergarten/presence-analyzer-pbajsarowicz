@@ -13,6 +13,11 @@ import logging
 log = logging.getLogger(__name__)  # pylint: disable=C0103
 from lxml import etree
 import urllib2
+import threading
+import time
+
+CACHE = {}
+CACHE_TIME = {}
 
 
 def jsonify(function):
@@ -73,6 +78,42 @@ def update_data_from_xml():
         xmlfile.write(temp)
 
 
+def locker(func):
+    """
+    Lock thread when missing
+    """
+    def wrap(*args, **kwargs):
+        """
+        Call acquire() method when block is entered,
+        release() when exited
+        """
+        lock = threading.Lock()
+        with lock:
+            return func(*args, **kwargs)
+    return wrap
+
+
+def cache(key, expiration_time):
+    """
+    Cache for data from CSV file.
+    """
+    def wrap(func):
+        def wrap_cache(*args, **kwargs):
+            now = time.time()
+            if key in CACHE:
+                duration = now - CACHE_TIME[key]
+                if(duration < expiration_time):
+                    return CACHE[key]
+            data = func(*args, **kwargs)
+            CACHE_TIME[key] = now
+            CACHE[key] = data
+            return CACHE[key]
+        return wrap_cache
+    return wrap
+
+
+@locker
+@cache('user_id', 5)
 def get_data():
     """
     Extracts presence data from CSV file and groups it by user_id.
