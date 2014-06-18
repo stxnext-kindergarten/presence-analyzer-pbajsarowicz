@@ -17,7 +17,6 @@ import threading
 import time
 
 CACHE = {}
-CACHE_TIME = {}
 
 
 def jsonify(function):
@@ -82,13 +81,14 @@ def locker(func):
     """
     Lock thread when missing
     """
+    func.lock = threading.Lock()
+
     def wrap(*args, **kwargs):
         """
         Call acquire() method when block is entered,
         release() when exited
         """
-        lock = threading.Lock()
-        with lock:
+        with func.lock:
             return func(*args, **kwargs)
     return wrap
 
@@ -99,21 +99,19 @@ def cache(key, expiration_time):
     """
     def wrap(func):
         def wrap_cache(*args, **kwargs):
-            now = time.time()
-            if key in CACHE:
-                duration = now - CACHE_TIME[key]
-                if(duration < expiration_time):
-                    return CACHE[key]
-            data = func(*args, **kwargs)
-            CACHE_TIME[key] = now
-            CACHE[key] = data
-            return CACHE[key]
+            if key in CACHE and time.time() - CACHE[key]['time']:
+                    return CACHE[key]['data']
+            CACHE[key] = {
+                'data': func(*args, **kwargs),
+                'time': time.time()
+            }
+            return CACHE[key]['data']
         return wrap_cache
     return wrap
 
 
 @locker
-@cache('user_id', 5)
+@cache('cache', 200)
 def get_data():
     """
     Extracts presence data from CSV file and groups it by user_id.

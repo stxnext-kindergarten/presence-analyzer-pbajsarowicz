@@ -198,6 +198,18 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         Test cache function
         """
         data1 = utils.get_data()
+        main.app.config.update({'DATA_CSV': TEST_CACHE_CSV})
+        data2 = utils.get_data()
+        self.assertEqual(data1, data2)
+        utils.CACHE = {}
+        data2 = utils.get_data()
+        self.assertNotEqual(data1, data2)
+        self.assertIsInstance(data1, dict)
+        self.assertIsInstance(data2, dict)
+        utils.CACHE = {}
+
+        """
+        data1 = utils.get_data()
         cache1 = utils.CACHE
         main.app.config.update({'DATA_CSV': TEST_CACHE_CSV})
         utils.CACHE = {}
@@ -207,7 +219,7 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         self.assertNotEqual(cache1, cache2)
         self.assertIsInstance(cache1, dict)
         self.assertIsInstance(cache2, dict)
-        utils.CACHE = {}
+        utils.CACHE = {}"""
 
     def test_get_data(self):
         """
