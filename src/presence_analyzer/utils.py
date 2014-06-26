@@ -15,7 +15,8 @@ from lxml import etree
 import urllib2
 import threading
 import time
-
+from collections import OrderedDict
+import locale
 CACHE = {}
 
 
@@ -64,7 +65,11 @@ def get_data_from_xml():
                 'avatar': '{}://{}:{}{}'.format(protocol, host, port, avatar),
                 'name': name
             })
-    return data
+    locale.setlocale(locale.LC_COLLATE, "pl_PL.UTF-8")
+    sorted_data = OrderedDict(
+        sorted(data.items(), key=lambda(k, v): (v['name']), cmp=locale.strcoll)
+    )
+    return sorted_data
 
 
 def update_data_from_xml():
