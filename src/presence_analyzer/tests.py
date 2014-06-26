@@ -208,7 +208,6 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         self.assertIsInstance(data2, dict)
         utils.CACHE = {}
 
-
     def test_get_data(self):
         """
         Test parsing of CSV file.
