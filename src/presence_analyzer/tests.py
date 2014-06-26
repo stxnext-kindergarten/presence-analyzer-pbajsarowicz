@@ -72,9 +72,9 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertEqual(resp.content_type, 'application/json')
         data = json.loads(resp.data)
         self.assertDictEqual(data[0], {
-            u'avatar': u'https://intranet.stxnext.pl:443/api/images/users/141',
-            u'name': u'Adam P.',
-            u'user_id': 141
+            u'avatar': u'https://intranet.stxnext.pl:443/api/images/users/130',
+            u'name': u'Kajetan O.',
+            u'user_id': 130
         })
 
     def test_api_mean_time_weekday(self):
