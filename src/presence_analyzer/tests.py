@@ -86,13 +86,13 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertEqual(resp.content_type, 'application/json')
         sample_data = json.loads(resp.data)
         self.assertEqual(sample_data, [
-            [u'pon', 0.0],
-            [u'wto', 30047.0],
-            [u'śro', 24465.0],
-            [u'czw', 23705.0],
-            [u'pią', 0.0],
-            [u'sob', 0.0],
-            [u'nie', 0.0],
+            [u'Mon', 0.0],
+            [u'Tue', 30047.0],
+            [u'Wed', 24465.0],
+            [u'Thu', 23705.0],
+            [u'Fri', 0.0],
+            [u'Sat', 0.0],
+            [u'Sun', 0.0],
         ])
 
         resp = self.client.get('/api/v1/mean_time_weekday/11')
@@ -100,13 +100,13 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertEqual(resp.content_type, 'application/json')
         sample_data = json.loads(resp.data)
         self.assertEqual(sample_data, [
-            [u'pon', 24123.0],
-            [u'wto', 16564.0],
-            [u'śro', 25321.0],
-            [u'czw', 22984.0],
-            [u'pią', 6426.0],
-            [u'sob', 0.0],
-            [u'nie', 0.0],
+            [u'Mon', 24123.0],
+            [u'Tue', 16564.0],
+            [u'Wed', 25321.0],
+            [u'Thu', 22984.0],
+            [u'Fri', 6426.0],
+            [u'Sat', 0.0],
+            [u'Sun', 0.0],
         ])
 
     def test_presence_weekday_view(self):
@@ -119,13 +119,13 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         sample_data = json.loads(resp.data)
         self.assertEqual(sample_data, [
             [u'Weekday', u'Presence (s)'],
-            [u'pon', 0],
-            [u'wto', 30047],
-            [u'śro', 24465],
-            [u'czw', 23705],
-            [u'pią', 0],
-            [u'sob', 0],
-            [u'nie', 0],
+            [u'Mon', 0],
+            [u'Tue', 30047],
+            [u'Wed', 24465],
+            [u'Thu', 23705],
+            [u'Fri', 0],
+            [u'Sat', 0],
+            [u'Sun', 0],
         ])
 
         resp = self.client.get('/api/v1/presence_weekday/11')
@@ -134,13 +134,13 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         sample_data = json.loads(resp.data)
         self.assertEqual(sample_data, [
             [u'Weekday', u'Presence (s)'],
-            [u'pon', 24123],
-            [u'wto', 16564],
-            [u'śro', 25321],
-            [u'czw', 45968],
-            [u'pią', 6426],
-            [u'sob', 0],
-            [u'nie', 0],
+            [u'Mon', 24123],
+            [u'Tue', 16564],
+            [u'Wed', 25321],
+            [u'Thu', 45968],
+            [u'Fri', 6426],
+            [u'Sat', 0],
+            [u'Sun', 0],
         ])
 
     def test_presence_start_end_view(self):
@@ -152,13 +152,13 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertEqual(resp.content_type, 'application/json')
         sample_data = json.loads(resp.data)
         self.assertEqual(sample_data, [
-            [u'pon', 0, 0],
-            [u'wto', 34745.0, 64792.0],
-            [u'śro', 33592.0, 58057.0],
-            [u'czw', 38926.0, 62631.0],
-            [u'pią', 0, 0],
-            [u'sob', 0, 0],
-            [u'nie', 0, 0]
+            [u'Mon', 0, 0],
+            [u'Tue', 34745.0, 64792.0],
+            [u'Wed', 33592.0, 58057.0],
+            [u'Thu', 38926.0, 62631.0],
+            [u'Fri', 0, 0],
+            [u'Sat', 0, 0],
+            [u'Sun', 0, 0]
         ])
 
         resp = self.client.get('/api/v1/presence_start_end/11')
@@ -166,13 +166,13 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertEqual(resp.content_type, 'application/json')
         sample_data = json.loads(resp.data)
         self.assertEqual(sample_data, [
-            [u'pon', 33134.0, 57257.0],
-            [u'wto', 33590.0, 50154.0],
-            [u'śro', 33206.0, 58527.0],
-            [u'czw', 35602.0, 58586.0],
-            [u'pią', 47816.0, 54242.0],
-            [u'sob', 0, 0],
-            [u'nie', 0, 0]
+            [u'Mon', 33134.0, 57257.0],
+            [u'Tue', 33590.0, 50154.0],
+            [u'Wed', 33206.0, 58527.0],
+            [u'Thu', 35602.0, 58586.0],
+            [u'Fri', 47816.0, 54242.0],
+            [u'Sat', 0, 0],
+            [u'Sun', 0, 0]
         ])
 
 

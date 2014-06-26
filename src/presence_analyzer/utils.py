@@ -65,7 +65,7 @@ def get_data_from_xml():
                 'avatar': '{}://{}:{}{}'.format(protocol, host, port, avatar),
                 'name': name
             })
-    locale.setlocale(locale.LC_ALL, "pl_PL.UTF-8")
+    locale.setlocale(locale.LC_COLLATE, "pl_PL.UTF-8")
     sorted_data = OrderedDict(
         sorted(data.items(), key=lambda(k, v): (v['name']), cmp=locale.strcoll)
     )
